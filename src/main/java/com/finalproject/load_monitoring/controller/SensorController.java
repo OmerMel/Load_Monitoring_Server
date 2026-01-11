@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/sensors")
+@RequestMapping("/api/sensors")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 @Tag(name = "IoT Sensor API", description = "Endpoints for updating carriage occupancy from IoT sensors")
