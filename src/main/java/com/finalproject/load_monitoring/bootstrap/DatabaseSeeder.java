@@ -43,24 +43,24 @@ public class DatabaseSeeder implements CommandLineRunner {
         trainRepository.save(haifaTrain);
 
         // יצירת קרונות לרכבת 1
-        createCarriage(haifaTrain, 1, 80, 10); // קרון ריק
+        createCarriage(haifaTrain, 1, 80, 0); // קרון ריק
         createCarriage(haifaTrain, 2, 80, 40); // קרון חצי מלא
         createCarriage(haifaTrain, 3, 80, 75); // קרון מלא
         createCarriage(haifaTrain, 4, 80, 82); // קרון עמוס מאוד
 
-        // --- יצירת רכבת 2: באר שבע - תל אביב ---
-        Train beershebaTrain = new Train();
-        beershebaTrain.setOriginStation("Beersheba North");
-        beershebaTrain.setDestinationStation("Tel Aviv HaShalom");
-        beershebaTrain.setDepartureTime(LocalDateTime.of(2025, 2, 8, 11, 0));
-        beershebaTrain.setArrivalTime(LocalDateTime.of(2025, 2, 8, 12, 30));
-        beershebaTrain.setCurrentStation("Kiryat Gat");
-        beershebaTrain.setLastUpdated(LocalDateTime.now());
-
-        trainRepository.save(beershebaTrain);
-
-        createCarriage(beershebaTrain, 1, 100, 20);
-        createCarriage(beershebaTrain, 2, 100, 50);
+//        // --- יצירת רכבת 2: באר שבע - תל אביב ---
+//        Train beershebaTrain = new Train();
+//        beershebaTrain.setOriginStation("Beersheba North");
+//        beershebaTrain.setDestinationStation("Tel Aviv HaShalom");
+//        beershebaTrain.setDepartureTime(LocalDateTime.of(2025, 2, 8, 11, 0));
+//        beershebaTrain.setArrivalTime(LocalDateTime.of(2025, 2, 8, 12, 30));
+//        beershebaTrain.setCurrentStation("Kiryat Gat");
+//        beershebaTrain.setLastUpdated(LocalDateTime.now());
+//
+//        trainRepository.save(beershebaTrain);
+//
+//        createCarriage(beershebaTrain, 1, 100, 20);
+//        createCarriage(beershebaTrain, 2, 100, 50);
 
         System.out.println("✅ Database seeding completed successfully!");
     }
