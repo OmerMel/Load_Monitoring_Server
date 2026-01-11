@@ -4,6 +4,7 @@ import com.finalproject.load_monitoring.dto.DtoMapper;
 import com.finalproject.load_monitoring.dto.TrainDTO;
 import com.finalproject.load_monitoring.entity.Carriage;
 import com.finalproject.load_monitoring.entity.Train;
+import com.finalproject.load_monitoring.exception.ResourceNotFoundException;
 import com.finalproject.load_monitoring.repository.CarriageRepository;
 import com.finalproject.load_monitoring.repository.TrainRepository;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +40,7 @@ public class TrainService {
      */
     public TrainDTO getTrainDetails(Long trainId) {
         Train train = trainRepository.findById(trainId)
-                .orElseThrow(() -> new RuntimeException("Train not found with id: " + trainId));
+                .orElseThrow(() -> new ResourceNotFoundException("Train not found with id: " + trainId));
         //TODO: throw custom exception
 
         List<Carriage> sortedCarriages = carriageRepository.findByTrainTrainIdOrderByCarriageNumberAsc(trainId);
