@@ -2,7 +2,9 @@ package com.finalproject.load_monitoring.service;
 
 import com.finalproject.load_monitoring.dto.DtoMapper;
 import com.finalproject.load_monitoring.dto.TrainDTO;
+import com.finalproject.load_monitoring.entity.Carriage;
 import com.finalproject.load_monitoring.entity.Train;
+import com.finalproject.load_monitoring.repository.CarriageRepository;
 import com.finalproject.load_monitoring.repository.TrainRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import java.util.List;
 public class TrainService {
 
     public final TrainRepository trainRepository;
+    private final CarriageRepository carriageRepository;
     public final DtoMapper dtoMapper;
 
     /**
@@ -38,8 +41,9 @@ public class TrainService {
         Train train = trainRepository.findById(trainId)
                 .orElseThrow(() -> new RuntimeException("Train not found with id: " + trainId));
         //TODO: throw custom exception
+
+        List<Carriage> sortedCarriages = carriageRepository.findByTrainTrainIdOrderByCarriageNumberAsc(trainId);
+
         return dtoMapper.toTrainDTO(train);
     }
-
-
 }
