@@ -30,10 +30,10 @@ public class DatabaseSeeder implements CommandLineRunner {
 
         System.out.println("🌱 Seeding database with dummy data...");
 
-        // --- יצירת רכבת 1: חיפה - תל אביב ---
+        // --- יצירת רכבת 1: נהריה - תל אביב ---
         Train haifaTrain = new Train();
-        haifaTrain.setOriginStation("Nahariya");
-        haifaTrain.setDestinationStation("Tel Aviv Savidor");
+        haifaTrain.setOriginStation("נהריה");
+        haifaTrain.setDestinationStation("תל אביב - סבידור");
         haifaTrain.setDepartureTime(LocalDateTime.of(2025, 2, 5, 8, 0));
         haifaTrain.setArrivalTime(LocalDateTime.of(2025, 2, 5, 11, 0));
         haifaTrain.setCurrentStation("Haifa Center");
@@ -43,12 +43,45 @@ public class DatabaseSeeder implements CommandLineRunner {
         trainRepository.save(haifaTrain);
 
         // יצירת קרונות לרכבת 1
-        createCarriage(haifaTrain, 1, 80, 0); // קרון ריק
+        createCarriage(haifaTrain, 1, 80, 82); // קרון ריק
         createCarriage(haifaTrain, 2, 80, 40); // קרון חצי מלא
         createCarriage(haifaTrain, 3, 80, 75); // קרון מלא
         createCarriage(haifaTrain, 4, 80, 82); // קרון עמוס מאוד
+        /// //////////////////////////////////////////////////////////////////////////////////////////
+        // --- יצירת רכבת 2: נהריה - תל אביב סבידור ---
+        Train nahariyaTrain = new Train();
+        nahariyaTrain.setOriginStation("נהריה");
+        nahariyaTrain.setDestinationStation("תל אביב - סבידור");
+        nahariyaTrain.setDepartureTime(LocalDateTime.of(2025, 2, 5, 9, 15));
+        nahariyaTrain.setArrivalTime(LocalDateTime.of(2025, 2, 5, 12, 0));
+        nahariyaTrain.setCurrentStation("עכו");
+        nahariyaTrain.setLastUpdated(LocalDateTime.now());
 
-//        // --- יצירת רכבת 2: באר שבע - תל אביב ---
+        trainRepository.save(nahariyaTrain);
+
+        createCarriage(nahariyaTrain, 1, 80, 20);
+        createCarriage(nahariyaTrain, 2, 80, 55);
+        createCarriage(nahariyaTrain, 3, 80, 78);
+        createCarriage(nahariyaTrain, 4, 80, 80);
+        //////////////////////////////////////////////////////////////////////////////////////////////
+        // --- יצירת רכבת 3: תל אביב אוניברסיטה - נתניה מערב ---
+        Train netanyaTrain = new Train();
+        netanyaTrain.setOriginStation("תל אביב - אוניברסיטה");
+        netanyaTrain.setDestinationStation("נתניה - מערב");
+        netanyaTrain.setDepartureTime(LocalDateTime.of(2025, 2, 5, 10, 0));
+        netanyaTrain.setArrivalTime(LocalDateTime.of(2025, 2, 5, 10, 45));
+        netanyaTrain.setCurrentStation("הרצליה");
+        netanyaTrain.setLastUpdated(LocalDateTime.now());
+
+        trainRepository.save(netanyaTrain);
+
+        createCarriage(netanyaTrain, 1, 70, 30);
+        createCarriage(netanyaTrain, 2, 70, 60);
+        createCarriage(netanyaTrain, 3, 70, 68);
+
+        //////////////////////////////////////////////////////////////////////////////////////////////
+
+//        // --- יצירת רכבת 4: באר שבע - תל אביב ---
 //        Train beershebaTrain = new Train();
 //        beershebaTrain.setOriginStation("Beersheba North");
 //        beershebaTrain.setDestinationStation("Tel Aviv HaShalom");
@@ -61,6 +94,7 @@ public class DatabaseSeeder implements CommandLineRunner {
 //
 //        createCarriage(beershebaTrain, 1, 100, 20);
 //        createCarriage(beershebaTrain, 2, 100, 50);
+        //////////////////////////////////////////////////////////////////////////////////////////////
 
         System.out.println("✅ Database seeding completed successfully!");
     }
