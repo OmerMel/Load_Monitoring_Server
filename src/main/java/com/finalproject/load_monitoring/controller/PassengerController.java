@@ -27,18 +27,14 @@ public class PassengerController {
         return ResponseEntity.ok(trainService.getAllTrains());
     }
 
-//    @GetMapping("/{id}")
-//    @Operation(summary = "Get Train Details", description = "Retrieve detailed information about a specific train by its ID.")
-//    public ResponseEntity<TrainDTO> getTrainById(Long id) {
-//        return ResponseEntity.ok(trainService.getTrainDetails(id));
-//    }
-
-
-
-
     @GetMapping("/{id}")
     @Operation(summary = "Get Train Details", description = "Retrieve detailed information about a specific train by its ID.")
     public ResponseEntity<TrainDTO> getTrainById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(trainService.getTrainDetails(id));
+    }
+
+    @GetMapping("/{origin}/{destination}")
+    public ResponseEntity<List<TrainDTO>> getAllTrainsByOriginAndDestination(@PathVariable String origin, @PathVariable String destination) {
+        return ResponseEntity.ok(trainService.getAllTrainsByOriginAndDestination(origin, destination));
     }
 }

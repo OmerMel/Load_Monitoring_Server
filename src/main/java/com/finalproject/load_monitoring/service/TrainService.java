@@ -47,4 +47,9 @@ public class TrainService {
 
         return dtoMapper.toTrainDTO(train);
     }
+
+    public List<TrainDTO> getAllTrainsByOriginAndDestination(String origin, String destination) {
+        List<Train> trains = trainRepository.findAllByOriginStationAndDestinationStation(origin, destination);
+        return dtoMapper.toDtoList(trains);
+    }
 }
