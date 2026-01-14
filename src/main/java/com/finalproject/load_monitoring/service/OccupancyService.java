@@ -28,18 +28,18 @@ public class OccupancyService {
         ).orElseThrow(() -> new ResourceNotFoundException("Carriage", "number " + data.getCarriageNumber() + " in train", data.getTrainId()));
 
         // Update the current occupancy
-        carriage.setOccupancy(data.getCurrentOccupancy());
+        carriage.setOccupancy(data.getCameraNumber() + data.getTofNumber());
         carriage.setLastUpdated(LocalDateTime.now());
         carriageRepository.save(carriage);
 
         // Log the occupancy update
         OccupancyLog log = new OccupancyLog();
         log.setCarriage(carriage);
-        log.setCalculatedOccupancy(data.getCurrentOccupancy());
+        log.setCalculatedOccupancy(data.getCameraNumber() + data.getTofNumber());
         log.setTimestamp(LocalDateTime.now());
 
         // For now, we set cameraCount and sensorCount to 0 as placeholders
-        log.setCameraCount(data.getCurrentOccupancy());
+        log.setCameraCount(data.getCameraNumber() + data.getTofNumber());
         log.setSensorCount(0);
 
         occupancyLogRepository.save(log);
