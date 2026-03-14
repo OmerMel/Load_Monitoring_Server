@@ -1,12 +1,14 @@
 package com.finalproject.load_monitoring.service;
 
-import com.finalproject.load_monitoring.dto.SensorUpdateDTO;
+import com.finalproject.load_monitoring.dto.SensorDataDTO;
 import com.finalproject.load_monitoring.exception.ResourceNotFoundException;
+import com.finalproject.load_monitoring.converter.OccupancyLogConverter;
 import com.finalproject.load_monitoring.entity.Carriage;
 import com.finalproject.load_monitoring.entity.OccupancyLog;
 import com.finalproject.load_monitoring.repository.CarriageRepository;
 import com.finalproject.load_monitoring.repository.OccupancyLogRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,34 +16,45 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OccupancyService {
 
     private final CarriageRepository carriageRepository;
     private final OccupancyLogRepository occupancyLogRepository;
+    private final OccupancyLogConverter occupancyLogConverter;
 
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    // Update the occupancy of a carriage
     @Transactional
-    public void updateOccupancy(SensorUpdateDTO data) {
+    public void updateOccupancy(SensorDataDTO data) {
         // Fetch the carriage based on train ID and carriage number
         Carriage carriage = carriageRepository.findByTrainTrainIdAndCarriageNumber(
                 data.getTrainId(),
                 data.getCarriageNumber()
         ).orElseThrow(() -> new ResourceNotFoundException("Carriage", "number " + data.getCarriageNumber() + " in train", data.getTrainId()));
 
-        // Update the current occupancy
-        carriage.setOccupancy(data.getCameraNumber() + data.getTofNumber());
+        // Calculate the occupancy using sensor fusion
+        int calculatedOccupancy = processSensorFusion(data);
+        data.setCalculatedOccupancy(calculatedOccupancy);
+
+        // Update carriage with the current occupancy
+        carriage.setOccupancy(data.getCalculatedOccupancy());
         carriage.setLastUpdated(LocalDateTime.now());
         carriageRepository.save(carriage);
 
-        // Log the occupancy update
-        OccupancyLog log = new OccupancyLog();
-        log.setCarriage(carriage);
-        log.setCalculatedOccupancy(data.getCameraNumber() + data.getTofNumber());
-        log.setTimestamp(LocalDateTime.now());
+        // Create a new occupancy log
+        OccupancyLog occupancyLog = occupancyLogConverter.toEntity(data, carriage);
 
-        // For now, we set cameraCount and sensorCount to 0 as placeholders
-        log.setCameraCount(data.getCameraNumber() + data.getTofNumber());
-        log.setSensorCount(0);
+        occupancyLogRepository.save(occupancyLog);
+    }
 
-        occupancyLogRepository.save(log);
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    // Process the sensor fusion
+    public int processSensorFusion(SensorDataDTO data) {
+        log.info("Processing sensor fusion for Train {}, Carriage {}", data.getTrainId(), data.getCarriageNumber());
+        
+        // Simple fusion logic: sum of camera and IR counts
+        // TODO: Implement the actual sensor fusion logic
+        return data.getCameraCount() + data.getIrCount();
     }
 }

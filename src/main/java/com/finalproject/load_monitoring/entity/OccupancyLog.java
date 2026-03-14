@@ -9,6 +9,7 @@ import lombok.ToString;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "occupancy_logs")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,16 +18,12 @@ public class OccupancyLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long logId;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "carriage_id")
     @ToString.Exclude
     private Carriage carriage;
-
     private int cameraCount;
-    private int sensorCount;
-
+    private int irCount;
     private int calculatedOccupancy;
-
     private LocalDateTime timestamp;
 }

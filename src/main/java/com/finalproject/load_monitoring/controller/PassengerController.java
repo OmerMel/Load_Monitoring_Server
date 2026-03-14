@@ -21,20 +21,31 @@ public class PassengerController {
 
     private final TrainService trainService;
 
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    // Get All Trains
     @GetMapping
     @Operation(summary = "Get All Trains", description = "Retrieve a list of all trains with their basic information.")
     public ResponseEntity<List<TrainDTO>> getAllTrains() {
         return ResponseEntity.ok(trainService.getAllTrains());
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    // Get Train Details
     @GetMapping("/{id}")
     @Operation(summary = "Get Train Details", description = "Retrieve detailed information about a specific train by its ID.")
     public ResponseEntity<TrainDTO> getTrainById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(trainService.getTrainDetails(id));
     }
 
-    @GetMapping("/{origin}/{destination}")
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    // Search Trains By Origin and Destination
+    @GetMapping("/search/{origin}/{destination}")
+    @Operation(summary = "Search Trains", description = "Search for trains traveling between a specific origin and destination.")
     public ResponseEntity<List<TrainDTO>> getAllTrainsByOriginAndDestination(@PathVariable String origin, @PathVariable String destination) {
         return ResponseEntity.ok(trainService.getAllTrainsByOriginAndDestination(origin, destination));
     }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    /// TODO: Get Trains By Origin and Destination and Departure Time
+    
 }

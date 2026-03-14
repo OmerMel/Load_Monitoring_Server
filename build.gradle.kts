@@ -1,6 +1,6 @@
 plugins {
 	java
-	id("org.springframework.boot") version "4.0.1"
+	id("org.springframework.boot") version "3.4.1"
 	id("io.spring.dependency-management") version "1.1.7"
 }
 
@@ -25,18 +25,20 @@ repositories {
 }
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-h2console")
+	// implementation("org.springframework.boot:spring-boot-h2console")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-integration")
-	implementation("org.springframework.boot:spring-boot-starter-webmvc")
+	implementation("org.springframework.boot:spring-boot-starter-web")
 
 	implementation("org.springframework.integration:spring-integration-http")
 	implementation("org.springframework.integration:spring-integration-jpa")
 
     //MQTT
     implementation("org.springframework.integration:spring-integration-mqtt")
+    implementation("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5")
 
 	runtimeOnly("com.h2database:h2")
+	runtimeOnly("org.postgresql:postgresql")
 
 	// MapStruct
 	implementation("org.mapstruct:mapstruct:1.5.5.Final")
@@ -51,8 +53,8 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 
 
-	testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
-	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	// testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
 	testImplementation("org.springframework.integration:spring-integration-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }

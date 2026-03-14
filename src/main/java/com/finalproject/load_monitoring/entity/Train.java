@@ -19,19 +19,16 @@ public class Train {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long trainId;
-
-    private String originStation;
-    private String destinationStation;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "origin_station_id")
+    private Station originStation;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "destination_station_id")
+    private Station destinationStation;
     private LocalDateTime departureTime;
     private LocalDateTime arrivalTime;
-
-    private String currentStation;
-
     @OneToMany(mappedBy = "train")
     @ToString.Exclude
     private List<Carriage> carriages;
-
     private LocalDateTime lastUpdated;
-
 }

@@ -9,5 +9,5 @@ import java.util.List;
 public interface TrainRepository extends JpaRepository<Train, Long> {
 
     public List<Train> findAllByDepartureTimeBetween(LocalDateTime start, LocalDateTime end);
-    public List<Train> findAllByOriginStationAndDestinationStation(String originStation, String destinationStation);
+    public List<Train> findAllByOriginStation_StationNameAndDestinationStation_StationName(String originStation, String destinationStation);
 }

@@ -16,8 +16,6 @@ public class TrainDTO {
     private String destinationStation;
     private String departureTime;
     private String arrivalTime;
-    private String currentStation;
     private String lastUpdated;
-
     private List<CarriageDTO> carriages;
 }
