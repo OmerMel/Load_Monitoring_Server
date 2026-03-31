@@ -43,7 +43,7 @@ public class MqttConfig {
         DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
         MqttConnectOptions options = new MqttConnectOptions();
         options.setServerURIs(new String[] { brokerUrl });
-        options.setCleanSession(true);
+        options.setCleanSession(false); // false to keep the session alive
         factory.setConnectionOptions(options);
         return factory;
     }
