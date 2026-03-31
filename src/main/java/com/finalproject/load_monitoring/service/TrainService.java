@@ -8,6 +8,7 @@ import com.finalproject.load_monitoring.repository.TrainRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -29,7 +30,6 @@ public class TrainService {
     public TrainDTO getTrainDetails(Long trainId) {
         Train train = trainRepository.findById(trainId)
                 .orElseThrow(() -> new ResourceNotFoundException("Train not found with id: " + trainId));
-        //TODO: throw custom exception
 
         return trainConverter.toDTO(train);
     }
@@ -37,10 +37,18 @@ public class TrainService {
     //////////////////////////////////////////////////////////////////////////////////////////////
     // Get all trains by origin and destination
     public List<TrainDTO> getAllTrainsByOriginAndDestination(String origin, String destination) {
-        List<Train> trains = trainRepository.findAllByOriginStation_StationNameAndDestinationStation_StationName(origin, destination);
+        List<Train> trains = trainRepository.findAllByOriginStation_StationNameAndDestinationStation_StationName(origin,
+                destination);
         return trainConverter.toDtoList(trains);
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////
-    /// TODO: Get trains by origin and destination and departure time
+    // Get all trains by origin and destination and departure time
+    public List<TrainDTO> getAllTrainsByOriginAndDestinationAndDepartureTime(String origin, String destination,
+            LocalDateTime departureTime) {
+        List<Train> trains = trainRepository
+                .findAllByOriginStation_StationNameAndDestinationStation_StationNameAndDepartureTimeAfter(origin,
+                        destination, departureTime);
+        return trainConverter.toDtoList(trains);
+    }
 }

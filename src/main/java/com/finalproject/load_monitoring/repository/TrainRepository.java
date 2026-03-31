@@ -8,6 +8,14 @@ import java.util.List;
 
 public interface TrainRepository extends JpaRepository<Train, Long> {
 
-    public List<Train> findAllByDepartureTimeBetween(LocalDateTime start, LocalDateTime end);
-    public List<Train> findAllByOriginStation_StationNameAndDestinationStation_StationName(String originStation, String destinationStation);
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        // Find all trains by origin and destination station names
+        public List<Train> findAllByOriginStation_StationNameAndDestinationStation_StationName(String originStation,
+                        String destinationStation);
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        // Find all trains by origin and destination station names and departure time
+        public List<Train> findAllByOriginStation_StationNameAndDestinationStation_StationNameAndDepartureTimeAfter(
+                        String originStation, String destinationStation, LocalDateTime departureTime);
+        ////////////////////////////////////////////////////////////////////////////////////////////
 }
