@@ -9,5 +9,6 @@ import java.util.Optional;
 public interface CarriageRepository extends JpaRepository<Carriage, Long> {
 
     public Optional<Carriage> findByTrainTrainIdAndCarriageNumber(Long trainId, int carriageNumber);
+    public Optional<Carriage> findByTrainTrainIdAndCarriageId(Long trainId, Long carriageId);
     public List<Carriage> findByTrainTrainIdOrderByCarriageNumberAsc(Long trainId);
 }
