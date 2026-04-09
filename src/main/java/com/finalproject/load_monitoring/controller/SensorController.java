@@ -2,6 +2,8 @@ package com.finalproject.load_monitoring.controller;
 
 import com.finalproject.load_monitoring.dto.SensorDataDTO;
 import com.finalproject.load_monitoring.service.OccupancyService;
+import com.finalproject.load_monitoring.dto.OccupancyLogDTO;
+import java.util.Optional;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -25,4 +27,14 @@ public class SensorController {
         occupancyService.updateOccupancy(sensorData);
         return ResponseEntity.ok("Occupancy updated successfully");
     }
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    // Get sensors data (camera counter and IR counter)
+    @GetMapping("/{carriageId}")
+    @Operation(summary = "Get Camera Counter and IR Counter", description = "Retrieve the camera counter and IR counter for a specific carriage.")
+    public ResponseEntity<Optional<OccupancyLogDTO>> getSensorsData(@PathVariable Long carriageId) {
+        return ResponseEntity.ok(occupancyService.getSensorsData(carriageId));
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////
 }
+

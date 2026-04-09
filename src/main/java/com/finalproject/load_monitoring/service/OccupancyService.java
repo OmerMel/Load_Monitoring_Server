@@ -7,8 +7,10 @@ import com.finalproject.load_monitoring.entity.Carriage;
 import com.finalproject.load_monitoring.entity.OccupancyLog;
 import com.finalproject.load_monitoring.repository.CarriageRepository;
 import com.finalproject.load_monitoring.repository.OccupancyLogRepository;
+import com.finalproject.load_monitoring.dto.OccupancyLogDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,4 +59,14 @@ public class OccupancyService {
         // TODO: Implement the actual sensor fusion logic
         return data.getCameraCount() + data.getIrCount();
     }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    // Get the sensors data (camera counter and IR counter)
+    @Transactional(readOnly = true)
+    public Optional<OccupancyLogDTO> getSensorsData(Long carriageId) {
+        return occupancyLogRepository.findFirstByCarriage_CarriageIdOrderByTimestampDesc(carriageId)
+                .map(occupancyLogConverter::toDTO);
+    }
+    
+    //////////////////////////////////////////////////////////////////////////////////////////////
 }
