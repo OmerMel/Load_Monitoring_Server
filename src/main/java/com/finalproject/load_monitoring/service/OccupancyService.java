@@ -24,6 +24,7 @@ public class OccupancyService {
     private final CarriageRepository carriageRepository;
     private final OccupancyLogRepository occupancyLogRepository;
     private final OccupancyLogConverter occupancyLogConverter;
+    private final SensorFusionService sensorFusionService;
 
     //////////////////////////////////////////////////////////////////////////////////////////////
     // Update the occupancy of a carriage
@@ -36,7 +37,7 @@ public class OccupancyService {
         ).orElseThrow(() -> new ResourceNotFoundException("Carriage", "number " + data.getCarriageNumber() + " in train", data.getTrainId()));
 
         // Calculate the occupancy using sensor fusion
-        int calculatedOccupancy = processSensorFusion(data);
+        int calculatedOccupancy = sensorFusionService.calculateOccupancy(data, carriage.getCarriageId());
         data.setCalculatedOccupancy(calculatedOccupancy);
 
         // Update carriage with the current occupancy
@@ -48,16 +49,6 @@ public class OccupancyService {
         OccupancyLog occupancyLog = occupancyLogConverter.toEntity(data, carriage);
 
         occupancyLogRepository.save(occupancyLog);
-    }
-
-    //////////////////////////////////////////////////////////////////////////////////////////////
-    // Process the sensor fusion
-    public int processSensorFusion(SensorDataDTO data) {
-        log.info("Processing sensor fusion for Train {}, Carriage {}", data.getTrainId(), data.getCarriageNumber());
-        
-        // Simple fusion logic: sum of camera and IR counts
-        // TODO: Implement the actual sensor fusion logic
-        return data.getCameraCount() + data.getIrCount();
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////
