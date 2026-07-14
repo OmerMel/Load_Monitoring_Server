@@ -24,7 +24,7 @@ public class OccupancyService {
     private final CarriageRepository carriageRepository;
     private final OccupancyLogRepository occupancyLogRepository;
     private final OccupancyLogConverter occupancyLogConverter;
-    private final SensorFusionService sensorFusionService;
+    private final KalmanSensorFusionService sensorFusionService;
 
     //////////////////////////////////////////////////////////////////////////////////////////////
     // Update the occupancy of a carriage
