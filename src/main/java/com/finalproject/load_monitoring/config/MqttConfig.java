@@ -79,7 +79,7 @@ public class MqttConfig {
                 // Convert JSON string (that comes from the MQTT topic) to DTO
                 SensorDataDTO sensorData = objectMapper.readValue(payload, SensorDataDTO.class);
                 
-                // Log the received data
+                // The received data from the MQTT topic
                 log.info("MQTT Message Received: Train ID: {}, Carriage: {}, Camera: {}, IR: {}", 
                         sensorData.getTrainId(), 
                         sensorData.getCarriageNumber(),

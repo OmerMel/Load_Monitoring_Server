@@ -1,18 +1,16 @@
 package com.finalproject.load_monitoring.service;
 
 import com.finalproject.load_monitoring.dto.SensorDataDTO;
-import com.finalproject.load_monitoring.entity.OccupancyLog;
 import com.finalproject.load_monitoring.repository.OccupancyLogRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class SensorFusionService {
+public class WeightSensorFusionService {
 
     private final OccupancyLogRepository occupancyLogRepository;
 
