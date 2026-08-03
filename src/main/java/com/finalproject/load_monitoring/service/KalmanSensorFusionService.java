@@ -7,10 +7,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Optional;
 
+/**
+ * One-dimensional Kalman Filter that estimates the number of passengers in a train carriage.
+ * The ToF sensors count entrances and exits, so their change predicts the new count,
+ * and the camera count is a direct measurement that corrects that prediction.
+ * The state of every carriage is now fetched from and stored in the database.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -18,67 +22,87 @@ public class KalmanSensorFusionService {
 
     private final OccupancyLogRepository occupancyLogRepository;
 
-    // זיכרון בתוך השרת ששומר את חוסר הוודאות (P) עבור כל קרון בנפרד
-    private final Map<Long, Double> errorCovarianceCache = new ConcurrentHashMap<>();
+    // Uncertainty of the first estimate of a carriage.
+    private static final double INITIAL_UNCERTAINTY = 1.0;
+    // Uncertainty added by the ToF based prediction (about 5 passengers).
+    private static final double TOF_PREDICTION_UNCERTAINTY = 25.0;
+    // Uncertainty of the camera count (about 4 passengers).
+    private static final double CAMERA_COUNT_UNCERTAINTY = 16.0;
 
-    // --- קבועי קלמן (כיול מערכת) ---
-    private static final double PROCESS_NOISE_Q = 0.15; // כמה דריפט ה-ToF צובר ב-2 דקות
-    private static final double MEASUREMENT_NOISE_R = 1.5; // רמת הרעש של המצלמה
-    private static final int MAX_REALISTIC_PASSENGER_FLOW = 30; // מקסימום אנשים ב-2 דקות
-
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * Fuses the camera count and the ToF count of one sample into a single occupancy value.
+     */
     public int calculateOccupancy(SensorDataDTO data, Long carriageId) {
-        int currentCamera = Math.max(0, data.getCameraCount());
-        int currentIr = Math.max(0, data.getIrCount());
+        String carriageKey = buildCarriageKey(data, carriageId);
+        int cameraCount = data.getCameraCount();
+        int currentTofCount = data.getIrCount();
 
-        // 1. שליפת מצב האכלוס הקודם מה-DB
-        List<OccupancyLog> recentLogs = occupancyLogRepository.findTop3ByCarriage_CarriageIdOrderByTimestampDesc(carriageId);
+        Optional<OccupancyLog> lastLogOpt = occupancyLogRepository.findFirstByCarriage_CarriageIdOrderByTimestampDesc(carriageId);
 
-        if (recentLogs.isEmpty()) {
-            log.info("No history for Carriage {}. Initializing with Camera count.", carriageId);
-            errorCovarianceCache.put(carriageId, 1.0); // אתחול ה-P בזיכרון
-            return currentCamera;
+        // If there is no previous log, initialize the carriage.
+        if ((lastLogOpt.isEmpty()) || (lastLogOpt.get().getCalculatedUncertainty() == null)) {
+            return initializeCarriage(data, carriageKey, cameraCount, currentTofCount);
         }
 
-        OccupancyLog prevLog = recentLogs.get(0);
-        double prevCalculated = prevLog.getCalculatedOccupancy();
-        int prevIr = Math.max(0, prevLog.getIrCount());
+        OccupancyLog lastLog = lastLogOpt.get(); // Get the last log.
+        double lastEstimatedCount = lastLog.getCalculatedOccupancy(); // Get the last estimated count.
+        double lastUncertainty = lastLog.getCalculatedUncertainty() != null ? lastLog.getCalculatedUncertainty() : INITIAL_UNCERTAINTY;
+        int lastTofCount = lastLog.getIrCount();
 
-        // 2. שליפת ה-P של הקרון הספציפי מהזיכרון של השרת (אם לא קיים, ברירת המחדל היא 1.0)
-        double prevP = errorCovarianceCache.getOrDefault(carriageId, 1.0);
+        // Calculate the passenger count change detected by the ToF sensors.
+        int deltaTofCount = currentTofCount - lastTofCount;
 
-        // 3. חישוב השינוי בחיישן (ToF Delta)
-        int tofDelta = currentIr - prevIr;
+        // Predict the current count using the previous estimate and the ToF change.
+        double predictedPassengerCount = lastEstimatedCount + deltaTofCount; // Predicted passenger count.
+        double predictedUncertainty = lastUncertainty + TOF_PREDICTION_UNCERTAINTY; // Predicted uncertainty.
 
-        // הגנה מפני "מלכודת איפוס החומרה" בקצה
-        if (Math.abs(tofDelta) > MAX_REALISTIC_PASSENGER_FLOW) {
-            log.warn("Edge reset detected or anomaly in IR Delta ({}). Skipping prediction step.", tofDelta);
-            tofDelta = 0;
-            prevP = 5.0; // מעלים את חוסר הוודאות כדי שנקבל תיקון חזק מהמצלמה
+        // Correct the prediction using the direct camera measurement.
+        double cameraCorrectionWeight = predictedUncertainty / (predictedUncertainty + CAMERA_COUNT_UNCERTAINTY);
+        double correctedPassengerCount =
+                predictedPassengerCount + cameraCorrectionWeight * (cameraCount - predictedPassengerCount);
+        double correctedUncertainty = (1.0 - cameraCorrectionWeight) * predictedUncertainty;
+
+        // Save the updated uncertainty to the DTO for persistence in the next sampling cycle.
+        data.setCalculatedUncertainty(correctedUncertainty);
+
+        int finalPassengerCount = Math.max(0, (int) Math.round(correctedPassengerCount));
+
+        log.debug("Carriage {} | Kalman - LastEstimate: {}, LastToF: {}, CurrentToF: {}, ToFChange: {}, " +
+                        "Predicted: {}, Camera: {}, CameraWeight: {}, Corrected: {}, Final: {}",
+                carriageKey,
+                String.format("%.2f", lastEstimatedCount),
+                lastTofCount,
+                currentTofCount,
+                deltaTofCount,
+                String.format("%.2f", predictedPassengerCount),
+                cameraCount,
+                String.format("%.2f", cameraCorrectionWeight),
+                String.format("%.2f", correctedPassengerCount),
+                finalPassengerCount);
+
+        return finalPassengerCount;
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    // Creates the first state of a carriage from the camera count.
+    private int initializeCarriage(SensorDataDTO data, String carriageKey, int cameraCount, int currentTofCount) {
+        data.setCalculatedUncertainty(INITIAL_UNCERTAINTY);
+
+        int finalPassengerCount = Math.max(0, cameraCount);
+
+        log.debug("Carriage {} | Kalman initialized - Estimate: {}, ToF baseline: {}, Uncertainty: {}",
+                carriageKey, finalPassengerCount, currentTofCount, INITIAL_UNCERTAINTY);
+
+        return finalPassengerCount;
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    // The carriage id is the stable key, with train id and carriage number as a fallback.
+    private String buildCarriageKey(SensorDataDTO data, Long carriageId) {
+        if (carriageId != null) {
+            return String.valueOf(carriageId);
         }
-
-        // =================================================================
-        // שלב א': חיזוי (Prediction) - מריצים על נתון ה-ToF
-        // =================================================================
-        double predictedState = prevCalculated + tofDelta;
-        double predictedP = prevP + PROCESS_NOISE_Q;
-
-        // =================================================================
-        // שלב ב': עדכון (Update) - מריצים על נתון המצלמה
-        // =================================================================
-        double kalmanGain = predictedP / (predictedP + MEASUREMENT_NOISE_R);
-        double currentState = predictedState + kalmanGain * (currentCamera - predictedState);
-        double currentP = (1 - kalmanGain) * predictedP;
-        // =================================================================
-
-        // 4. שמירת ה-P המעודכן בזיכרון של השרת בשביל הסבב הבא
-        errorCovarianceCache.put(carriageId, currentP);
-
-        int finalOccupancy = Math.max(0, (int) Math.round(currentState));
-
-        log.info("Carriage {} | Kalman Filter - Gain: {}, Predicted: {}, Camera: {}, Final: {}, Saved P: {}",
-                carriageId, String.format("%.2f", kalmanGain), String.format("%.2f", predictedState),
-                currentCamera, finalOccupancy, String.format("%.2f", currentP));
-
-        return finalOccupancy;
+        return data.getTrainId() + "-" + data.getCarriageNumber();
     }
 }

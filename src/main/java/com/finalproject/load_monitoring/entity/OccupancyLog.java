@@ -25,5 +25,6 @@ public class OccupancyLog {
     private int cameraCount;
     private int irCount;
     private int calculatedOccupancy;
+    private Double calculatedUncertainty;
     private LocalDateTime timestamp;
 }
