@@ -1,0 +1,177 @@
+============================================================
+KALMAN SENSOR FUSION TEST RESULTS
+Executed at: 2026-08-01T00:17:28.566074100
+Service under test: KalmanSensorFusionService
+============================================================
+
+[COLLECTED SENSOR DATA]
+
+--- Original Set ---
+Scenario Original 1 | Actual: 1 | Camera: 0 | ToF: 1
+Scenario Original 2 | Actual: 6 | Camera: 6 | ToF: 5
+Scenario Original 3 | Actual: 11 | Camera: 11 | ToF: 7
+Scenario Original 4 | Actual: 15 | Camera: 14 | ToF: 10
+Scenario Original 5 | Actual: 17 | Camera: 18 | ToF: 11
+Scenario Original 6 | Actual: 22 | Camera: 21 | ToF: 15
+Scenario Original 7 | Actual: 24 | Camera: 21 | ToF: 17
+
+--- SET A: Camera accurate, ToF drifts low ---
+Scenario A-1 | Actual: 30 | Camera: 30 | ToF: 22
+Scenario A-2 | Actual: 38 | Camera: 39 | ToF: 26
+Scenario A-3 | Actual: 45 | Camera: 44 | ToF: 31
+Scenario A-4 | Actual: 52 | Camera: 53 | ToF: 35
+Scenario A-5 | Actual: 60 | Camera: 59 | ToF: 40
+
+--- SET B: ToF accurate, Camera drifts high ---
+Scenario B-1 | Actual: 25 | Camera: 33 | ToF: 26
+Scenario B-2 | Actual: 31 | Camera: 40 | ToF: 30
+Scenario B-3 | Actual: 40 | Camera: 51 | ToF: 41
+Scenario B-4 | Actual: 48 | Camera: 60 | ToF: 47
+Scenario B-5 | Actual: 55 | Camera: 70 | ToF: 56
+
+--- SET C: Both sensors agree closely ---
+Scenario C-1 | Actual: 70 | Camera: 70 | ToF: 69
+Scenario C-2 | Actual: 80 | Camera: 81 | ToF: 79
+Scenario C-3 | Actual: 90 | Camera: 90 | ToF: 91
+
+--- SET D: Both sensors disagree significantly ---
+Scenario D-1 | Actual: 65 | Camera: 50 | ToF: 82
+Scenario D-2 | Actual: 72 | Camera: 90 | ToF: 55
+Scenario D-3 | Actual: 100 | Camera: 78 | ToF: 120
+
+--- SET E: Occupancy decreasing ---
+Scenario E-1 | Actual: 60 | Camera: 59 | ToF: 45
+Scenario E-2 | Actual: 50 | Camera: 48 | ToF: 38
+Scenario E-3 | Actual: 35 | Camera: 34 | ToF: 27
+Scenario E-4 | Actual: 20 | Camera: 19 | ToF: 15
+Scenario E-5 | Actual: 8 | Camera: 7 | ToF: 6
+
+--- SET F: Sudden jump ---
+Scenario F-1 | Actual: 15 | Camera: 14 | ToF: 11
+Scenario F-2 | Actual: 90 | Camera: 85 | ToF: 60
+
+--- SET G: Edge cases / extreme values ---
+Scenario G-1 | Actual: 0 | Camera: 0 | ToF: 0
+Scenario G-2 | Actual: 1 | Camera: 0 | ToF: 0
+Scenario G-3 | Actual: 150 | Camera: 148 | ToF: 105
+Scenario G-4 | Actual: 120 | Camera: 0 | ToF: 118
+Scenario G-5 | Actual: 110 | Camera: 112 | ToF: 0
+
+============================================================
+[INDEPENDENT MEASUREMENT TESTS]
+============================================================
+
+Test: Actual occupancy 1 (Original 1) | Actual: 1 | Camera: 0 | ToF: 1 | Kalman: 0 | Error: 1 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 6 (Original 2) | Actual: 6 | Camera: 6 | ToF: 5 | Kalman: 6 | Error: 0 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 11 (Original 3) | Actual: 11 | Camera: 11 | ToF: 7 | Kalman: 11 | Error: 0 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 15 (Original 4) | Actual: 15 | Camera: 14 | ToF: 10 | Kalman: 14 | Error: 1 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 17 (Original 5) | Actual: 17 | Camera: 18 | ToF: 11 | Kalman: 18 | Error: 1 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 22 (Original 6) | Actual: 22 | Camera: 21 | ToF: 15 | Kalman: 21 | Error: 1 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 24 (Original 7) | Actual: 24 | Camera: 21 | ToF: 17 | Kalman: 21 | Error: 3 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 30 (A-1) | Actual: 30 | Camera: 30 | ToF: 22 | Kalman: 30 | Error: 0 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 38 (A-2) | Actual: 38 | Camera: 39 | ToF: 26 | Kalman: 39 | Error: 1 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 45 (A-3) | Actual: 45 | Camera: 44 | ToF: 31 | Kalman: 44 | Error: 1 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 52 (A-4) | Actual: 52 | Camera: 53 | ToF: 35 | Kalman: 53 | Error: 1 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 60 (A-5) | Actual: 60 | Camera: 59 | ToF: 40 | Kalman: 59 | Error: 1 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 25 (B-1) | Actual: 25 | Camera: 33 | ToF: 26 | Kalman: 33 | Error: 8 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 31 (B-2) | Actual: 31 | Camera: 40 | ToF: 30 | Kalman: 40 | Error: 9 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 40 (B-3) | Actual: 40 | Camera: 51 | ToF: 41 | Kalman: 51 | Error: 11 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 48 (B-4) | Actual: 48 | Camera: 60 | ToF: 47 | Kalman: 60 | Error: 12 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 55 (B-5) | Actual: 55 | Camera: 70 | ToF: 56 | Kalman: 70 | Error: 15 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 70 (C-1) | Actual: 70 | Camera: 70 | ToF: 69 | Kalman: 70 | Error: 0 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 80 (C-2) | Actual: 80 | Camera: 81 | ToF: 79 | Kalman: 81 | Error: 1 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 90 (C-3) | Actual: 90 | Camera: 90 | ToF: 91 | Kalman: 90 | Error: 0 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 65 (D-1) | Actual: 65 | Camera: 50 | ToF: 82 | Kalman: 50 | Error: 15 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 72 (D-2) | Actual: 72 | Camera: 90 | ToF: 55 | Kalman: 90 | Error: 18 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 100 (D-3) | Actual: 100 | Camera: 78 | ToF: 120 | Kalman: 78 | Error: 22 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 60 (E-1) | Actual: 60 | Camera: 59 | ToF: 45 | Kalman: 59 | Error: 1 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 50 (E-2) | Actual: 50 | Camera: 48 | ToF: 38 | Kalman: 48 | Error: 2 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 35 (E-3) | Actual: 35 | Camera: 34 | ToF: 27 | Kalman: 34 | Error: 1 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 20 (E-4) | Actual: 20 | Camera: 19 | ToF: 15 | Kalman: 19 | Error: 1 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 8 (E-5) | Actual: 8 | Camera: 7 | ToF: 6 | Kalman: 7 | Error: 1 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 15 (F-1) | Actual: 15 | Camera: 14 | ToF: 11 | Kalman: 14 | Error: 1 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 90 (F-2) | Actual: 90 | Camera: 85 | ToF: 60 | Kalman: 85 | Error: 5 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 0 (G-1) | Actual: 0 | Camera: 0 | ToF: 0 | Kalman: 0 | Error: 0 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 1 (G-2) | Actual: 1 | Camera: 0 | ToF: 0 | Kalman: 0 | Error: 1 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 150 (G-3) | Actual: 150 | Camera: 148 | ToF: 105 | Kalman: 148 | Error: 2 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 120 (G-4) | Actual: 120 | Camera: 0 | ToF: 118 | Kalman: 0 | Error: 120 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Actual occupancy 110 (G-5) | Actual: 110 | Camera: 112 | ToF: 0 | Kalman: 112 | Error: 2 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+
+============================================================
+[SEQUENTIAL OCCUPANCY INCREASE]
+============================================================
+
+--- Original Set ---
+Test: Sequential occupancy increase | Measurement: 1/7 | Actual: 1 | Camera: 0 | ToF: 1 | Kalman: 0 | Error: 1 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Sequential occupancy increase | Measurement: 2/7 | Actual: 6 | Camera: 6 | ToF: 5 | Kalman: 5 | Error: 1 | Previous Uncertainty: 1.00000 | New Uncertainty: 9.90476 | Functional Status: PASS
+Test: Sequential occupancy increase | Measurement: 3/7 | Actual: 11 | Camera: 11 | ToF: 7 | Kalman: 10 | Error: 1 | Previous Uncertainty: 9.90476 | New Uncertainty: 10.97100 | Functional Status: PASS
+Test: Sequential occupancy increase | Measurement: 4/7 | Actual: 15 | Camera: 14 | ToF: 10 | Kalman: 14 | Error: 1 | Previous Uncertainty: 10.97100 | New Uncertainty: 11.07418 | Functional Status: PASS
+Test: Sequential occupancy increase | Measurement: 5/7 | Actual: 17 | Camera: 18 | ToF: 11 | Kalman: 17 | Error: 0 | Previous Uncertainty: 11.07418 | New Uncertainty: 11.08394 | Functional Status: PASS
+Test: Sequential occupancy increase | Measurement: 6/7 | Actual: 22 | Camera: 21 | ToF: 15 | Kalman: 21 | Error: 1 | Previous Uncertainty: 11.08394 | New Uncertainty: 11.08486 | Functional Status: PASS
+Test: Sequential occupancy increase | Measurement: 7/7 | Actual: 24 | Camera: 21 | ToF: 17 | Kalman: 22 | Error: 2 | Previous Uncertainty: 11.08486 | New Uncertainty: 11.08494 | Functional Status: PASS
+
+--- SET A: Camera accurate, ToF drifts low ---
+Test: Sequential occupancy increase | Measurement: 1/5 | Actual: 30 | Camera: 30 | ToF: 22 | Kalman: 30 | Error: 0 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Sequential occupancy increase | Measurement: 2/5 | Actual: 38 | Camera: 39 | ToF: 26 | Kalman: 37 | Error: 1 | Previous Uncertainty: 1.00000 | New Uncertainty: 9.90476 | Functional Status: PASS
+Test: Sequential occupancy increase | Measurement: 3/5 | Actual: 45 | Camera: 44 | ToF: 31 | Kalman: 43 | Error: 2 | Previous Uncertainty: 9.90476 | New Uncertainty: 10.97100 | Functional Status: PASS
+Test: Sequential occupancy increase | Measurement: 4/5 | Actual: 52 | Camera: 53 | ToF: 35 | Kalman: 51 | Error: 1 | Previous Uncertainty: 10.97100 | New Uncertainty: 11.07418 | Functional Status: PASS
+Test: Sequential occupancy increase | Measurement: 5/5 | Actual: 60 | Camera: 59 | ToF: 40 | Kalman: 58 | Error: 2 | Previous Uncertainty: 11.07418 | New Uncertainty: 11.08394 | Functional Status: PASS
+
+--- SET B: ToF accurate, Camera drifts high ---
+Test: Sequential occupancy increase | Measurement: 1/5 | Actual: 25 | Camera: 33 | ToF: 26 | Kalman: 33 | Error: 8 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Sequential occupancy increase | Measurement: 2/5 | Actual: 31 | Camera: 40 | ToF: 30 | Kalman: 39 | Error: 8 | Previous Uncertainty: 1.00000 | New Uncertainty: 9.90476 | Functional Status: PASS
+Test: Sequential occupancy increase | Measurement: 3/5 | Actual: 40 | Camera: 51 | ToF: 41 | Kalman: 51 | Error: 11 | Previous Uncertainty: 9.90476 | New Uncertainty: 10.97100 | Functional Status: PASS
+Test: Sequential occupancy increase | Measurement: 4/5 | Actual: 48 | Camera: 60 | ToF: 47 | Kalman: 59 | Error: 11 | Previous Uncertainty: 10.97100 | New Uncertainty: 11.07418 | Functional Status: PASS
+Test: Sequential occupancy increase | Measurement: 5/5 | Actual: 55 | Camera: 70 | ToF: 56 | Kalman: 69 | Error: 14 | Previous Uncertainty: 11.07418 | New Uncertainty: 11.08394 | Functional Status: PASS
+
+--- SET C: Both sensors agree closely ---
+Test: Sequential occupancy increase | Measurement: 1/3 | Actual: 70 | Camera: 70 | ToF: 69 | Kalman: 70 | Error: 0 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Sequential occupancy increase | Measurement: 2/3 | Actual: 80 | Camera: 81 | ToF: 79 | Kalman: 81 | Error: 1 | Previous Uncertainty: 1.00000 | New Uncertainty: 9.90476 | Functional Status: PASS
+Test: Sequential occupancy increase | Measurement: 3/3 | Actual: 90 | Camera: 90 | ToF: 91 | Kalman: 91 | Error: 1 | Previous Uncertainty: 9.90476 | New Uncertainty: 10.97100 | Functional Status: PASS
+
+--- SET D: Both sensors disagree significantly ---
+Test: Sequential occupancy increase | Measurement: 1/3 | Actual: 65 | Camera: 50 | ToF: 82 | Kalman: 50 | Error: 15 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Sequential occupancy increase | Measurement: 2/3 | Actual: 72 | Camera: 90 | ToF: 55 | Kalman: 64 | Error: 8 | Previous Uncertainty: 1.00000 | New Uncertainty: 9.90476 | Functional Status: PASS
+Test: Sequential occupancy increase | Measurement: 3/3 | Actual: 100 | Camera: 78 | ToF: 120 | Kalman: 94 | Error: 6 | Previous Uncertainty: 9.90476 | New Uncertainty: 10.97100 | Functional Status: PASS
+
+--- SET E: Occupancy decreasing ---
+Test: Sequential occupancy increase | Measurement: 1/5 | Actual: 60 | Camera: 59 | ToF: 45 | Kalman: 59 | Error: 1 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Sequential occupancy increase | Measurement: 2/5 | Actual: 50 | Camera: 48 | ToF: 38 | Kalman: 50 | Error: 0 | Previous Uncertainty: 1.00000 | New Uncertainty: 9.90476 | Functional Status: PASS
+Test: Sequential occupancy increase | Measurement: 3/5 | Actual: 35 | Camera: 34 | ToF: 27 | Kalman: 36 | Error: 1 | Previous Uncertainty: 9.90476 | New Uncertainty: 10.97100 | Functional Status: PASS
+Test: Sequential occupancy increase | Measurement: 4/5 | Actual: 20 | Camera: 19 | ToF: 15 | Kalman: 21 | Error: 1 | Previous Uncertainty: 10.97100 | New Uncertainty: 11.07418 | Functional Status: PASS
+Test: Sequential occupancy increase | Measurement: 5/5 | Actual: 8 | Camera: 7 | ToF: 6 | Kalman: 9 | Error: 1 | Previous Uncertainty: 11.07418 | New Uncertainty: 11.08394 | Functional Status: PASS
+
+--- SET F: Sudden jump ---
+Test: Sequential occupancy increase | Measurement: 1/2 | Actual: 15 | Camera: 14 | ToF: 11 | Kalman: 14 | Error: 1 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Sequential occupancy increase | Measurement: 2/2 | Actual: 90 | Camera: 85 | ToF: 60 | Kalman: 77 | Error: 13 | Previous Uncertainty: 1.00000 | New Uncertainty: 9.90476 | Functional Status: PASS
+
+--- SET G: Edge cases / extreme values ---
+Test: Sequential occupancy increase | Measurement: 1/5 | Actual: 0 | Camera: 0 | ToF: 0 | Kalman: 0 | Error: 0 | Previous Uncertainty: N/A | New Uncertainty: 1.00000 | Functional Status: PASS
+Test: Sequential occupancy increase | Measurement: 2/5 | Actual: 1 | Camera: 0 | ToF: 0 | Kalman: 0 | Error: 1 | Previous Uncertainty: 1.00000 | New Uncertainty: 9.90476 | Functional Status: PASS
+Test: Sequential occupancy increase | Measurement: 3/5 | Actual: 150 | Camera: 148 | ToF: 105 | Kalman: 134 | Error: 16 | Previous Uncertainty: 9.90476 | New Uncertainty: 10.97100 | Functional Status: PASS
+Test: Sequential occupancy increase | Measurement: 4/5 | Actual: 120 | Camera: 0 | ToF: 118 | Kalman: 45 | Error: 75 | Previous Uncertainty: 10.97100 | New Uncertainty: 11.07418 | Functional Status: PASS
+Test: Sequential occupancy increase | Measurement: 5/5 | Actual: 110 | Camera: 112 | ToF: 0 | Kalman: 55 | Error: 55 | Previous Uncertainty: 11.07418 | New Uncertainty: 11.08394 | Functional Status: PASS
+
+============================================================
+SUMMARY
+============================================================
+
+Total measurements: 70
+Passed assertions: 70
+Failed assertions: 0
+
+Average camera absolute error: 7.40
+Average ToF absolute error: 11.34
+Average Kalman absolute error: 7.43
+
+Maximum camera error: 120
+Maximum ToF error: 110
+Maximum Kalman error: 120
+
+Kalman closer than camera: 9 (12.9%)
+Kalman closer than ToF: 46 (65.7%)
+Kalman equal to or closer than both sensors: 46 (65.7%)
+
+Functional Concerns (Kalman worse than raw sensors): 0 (0.0%)
+
+============================================================
