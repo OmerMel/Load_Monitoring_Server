@@ -20,8 +20,6 @@ Based on the implemented services and configuration, the server is responsible f
 
 ## System Architecture
 
-System Architecture
-
 The server acts as the central component connecting the entire system:
 
 1. **Edge Unit (Raspberry Pi & Sensors):** Collects passenger-count data and publishes it over MQTT.
