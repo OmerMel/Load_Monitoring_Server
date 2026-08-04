@@ -46,6 +46,29 @@ This project is built utilizing the following technologies and libraries:
 
 
 
+## Repository Structure
+
+The source code follows a standard Spring Boot layer-based architecture:
+
+```text
+src/
+├── main/
+│   ├── java/com/finalproject/load_monitoring/
+│   │   ├── config/       # MQTT and OpenAPI configurations
+│   │   ├── controller/   # REST API endpoints (Sensor, Passenger, Station)
+│   │   ├── converter/    # MapStruct converters bridging DTOs and Entities
+│   │   ├── dto/          # Data Transfer Objects for API and MQTT payloads
+│   │   ├── entity/       # JPA Entities mapping to PostgreSQL tables
+│   │   ├── exception/    # Custom exception handlers
+│   │   ├── repository/   # Spring Data JPA interfaces
+│   │   └── service/      # Core business logic and Kalman sensor-fusion algorithms
+│   └── resources/        # Application properties (DB, MQTT settings)
+└── test/
+    └── java/com/finalproject/load_monitoring/
+        ├── controller/   # API Integration tests
+        └── service/      # Extensive Kalman algorithm and service unit tests
+```
+
 ## Kalman Sensor-Fusion Algorithm
 
 The core processing logic of the server is handled by the `KalmanSensorFusionService`. 
