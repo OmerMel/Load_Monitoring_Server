@@ -25,6 +25,8 @@ public class OccupancyLogConverter {
         log.setCalculatedOccupancy(data.getCalculatedOccupancy());
         System.out.println("Calculated Uncertainty: " + data.getCalculatedUncertainty());
         log.setCalculatedUncertainty(data.getCalculatedUncertainty());
+        log.setCameraStatus(data.getCameraStatus());
+        log.setIrStatus(data.getIrStatus());
         log.setTimestamp(LocalDateTime.now());
         
         return log;
@@ -44,6 +46,8 @@ public class OccupancyLogConverter {
             entityLog.getIrCount(),
             entityLog.getCalculatedOccupancy(),
             entityLog.getCalculatedUncertainty(),
+            entityLog.getCameraStatus(),
+            entityLog.getIrStatus(),
             entityLog.getTimestamp()
         );
     }

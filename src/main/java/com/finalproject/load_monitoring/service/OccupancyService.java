@@ -36,9 +36,34 @@ public class OccupancyService {
                 data.getCarriageNumber()
         ).orElseThrow(() -> new ResourceNotFoundException("Carriage", "number " + data.getCarriageNumber() + " in train", data.getTrainId()));
 
-        // Calculate the occupancy using sensor fusion
-        int calculatedOccupancy = sensorFusionService.calculateOccupancy(data, carriage.getCarriageId());
+        boolean cameraOk = !"unavailable".equals(data.getCameraStatus());
+        boolean irOk = !"unavailable".equals(data.getIrStatus());
+
+        int calculatedOccupancy;
+        if (cameraOk && irOk) {
+            // Both sources available - run the normal Kalman sensor fusion
+            calculatedOccupancy = sensorFusionService.calculateOccupancy(data, carriage.getCarriageId());
+        } else if (cameraOk) {
+            // IR is down - trust the camera reading directly, skip fusion entirely
+            log.warn("Carriage {} | IR sensor unavailable, using camera count directly: {}",
+                    carriage.getCarriageId(), data.getCameraCount());
+            calculatedOccupancy = Math.max(0, data.getCameraCount());
+            data.setCalculatedUncertainty(null); // forces Kalman to re-initialize once both sources are back
+        } else if (irOk) {
+            // Camera is down - trust the IR count directly (it's already an absolute headcount)
+            log.warn("Carriage {} | Camera unavailable, using IR count directly: {}",
+                    carriage.getCarriageId(), data.getIrCount());
+            calculatedOccupancy = Math.max(0, data.getIrCount());
+            data.setCalculatedUncertainty(null);
+        } else {
+            // Both sources are down - keep the last known occupancy instead of guessing
+            log.warn("Carriage {} | Both camera and IR unavailable, keeping last known occupancy: {}",
+                    carriage.getCarriageId(), carriage.getOccupancy());
+            calculatedOccupancy = carriage.getOccupancy();
+            data.setCalculatedUncertainty(null);
+        }
         data.setCalculatedOccupancy(calculatedOccupancy);
+
 
         // Update carriage with the current occupancy
         carriage.setOccupancy(data.getCalculatedOccupancy());

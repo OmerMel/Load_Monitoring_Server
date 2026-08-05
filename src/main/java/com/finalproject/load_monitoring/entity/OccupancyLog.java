@@ -26,5 +26,7 @@ public class OccupancyLog {
     private int irCount;
     private int calculatedOccupancy;
     private Double calculatedUncertainty;
+    private String cameraStatus; // "ok" / "unavailable"
+    private String irStatus;     // "ok" / "unavailable"
     private LocalDateTime timestamp;
 }
